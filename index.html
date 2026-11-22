@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>داشبورد مالی سازمانی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f4;--sf:#fff;--ink:#101c28;--mute:#5b6b78;--line:#d6dde3;--in:#0b7a6e;--out:#a62d5c;--ac:#1d4f91;--tr:#e3e9ee;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1821;--sf:#15252f;--ink:#e8eff3;--mute:#91a4b0;--line:#27404f;--in:#3fc4b2;--out:#f070a0;--ac:#7fb0f0;--tr:#213744;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1821;--sf:#15252f;--ink:#e8eff3;--mute:#91a4b0;--line:#27404f;--in:#3fc4b2;--out:#f070a0;--ac:#7fb0f0;--tr:#213744;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:1160px;margin:0 auto;padding:20px 16px 48px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px;padding:8px 0 20px}
+.top h1{margin:0;font-size:22px;font-weight:800}
+.top p{margin:0;color:var(--mute);font-size:13px}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--sf)}
+.seg button{border:0;background:none;padding:7px 16px;font:inherit;font-size:13.5px;color:var(--mute);cursor:pointer}
+.seg button.on{background:var(--ink);color:var(--sf);font-weight:600}
+.kpis{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:900px){.kpis{grid-template-columns:1fr 1fr}.kpis .big{grid-column:1/-1}}
+.k{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.k span{display:block;font-size:13px;color:var(--mute)}
+.k b{display:block;font-size:24px;font-weight:800;line-height:1.4}
+.k.big b{font-size:clamp(30px,5vw,44px)}
+.k em{font-style:normal;font-size:12.5px}
+.up{color:var(--in)}.dn{color:var(--out)}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card h2{margin:0 0 12px;font-size:16px;font-weight:600}
+.leg{display:flex;gap:16px;font-size:13px;color:var(--mute);margin-bottom:6px;flex-wrap:wrap}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:6px}
+.chart{overflow-x:auto}
+svg text{font-family:"Vazirmatn",Tahoma,sans-serif;fill:var(--mute);font-size:11px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-weight:600;color:var(--mute);text-align:start;padding:6px 8px;border-bottom:1px solid var(--line);font-size:12.5px}
+td{padding:9px 8px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+.bar{height:6px;background:var(--tr);border-radius:3px;margin-top:5px;overflow:hidden}
+.bar div{height:100%;background:var(--ac);border-radius:3px}
+.bar .o{background:var(--out)}
+.row{display:flex;justify-content:space-between;font-size:13.5px;margin-top:10px}
+.stk{display:flex;height:14px;border-radius:4px;overflow:hidden;gap:2px;margin:6px 0 8px}
+.note{font-size:12px;color:var(--mute);margin-top:14px}
+form{display:grid;gap:10px}
+input,select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.go{border:0;border-radius:8px;padding:10px;background:var(--ac);color:var(--sf);font:inherit;font-weight:600;cursor:pointer}
+.sm{border:1px solid var(--line);background:none;border-radius:6px;padding:3px 10px;font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer}
+.tag{font-size:12px;padding:2px 8px;border-radius:10px;background:var(--tr);white-space:nowrap}
+.tag.w{background:var(--out);color:#fff}
+.mini{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:12px}
+.mini span{display:block;font-size:12.5px;color:var(--mute)}
+.mini b{font-size:18px}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><h1>داشبورد مالی سازمانی</h1><p>همه مبالغ به میلیارد تومان • داده‌ها نمونه‌اند</p></div>
+    <div class="seg" id="seg"><button data-n="3">۳ ماه</button><button data-n="6">۶ ماه</button><button data-n="12" class="on">۱۲ ماه</button></div>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>درآمد و هزینه</h2>
+      <div class="leg"><span><i style="background:var(--in)"></i>درآمد</span><span><i style="background:var(--out)"></i>هزینه</span></div>
+      <div class="chart" id="chart"></div>
+    </section>
+    <section class="card">
+      <h2>درآمد به تفکیک واحد کسب‌وکار</h2>
+      <div id="units"></div>
+    </section>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>بودجه و عملکرد دپارتمان‌ها</h2>
+      <table><thead><tr><th>دپارتمان</th><th>بودجه</th><th>عملکرد</th><th>انحراف</th></tr></thead><tbody id="depts"></tbody></table>
+    </section>
+    <section class="card">
+      <h2>مطالبات و بدهی‌ها</h2>
+      <div id="aging"></div>
+      <p class="note">رنگ هر بخش از تیره به روشن، از جاری تا بیش از ۹۰ روز است.</p>
+    </section>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>تنخواه‌گردان‌ها</h2>
+      <div class="mini" id="tks"></div>
+      <table><thead><tr><th>تنخواه‌دار</th><th>سقف</th><th>هزینه‌شده</th><th>مانده</th><th>وضعیت</th></tr></thead><tbody id="tkb"></tbody></table>
+      <p class="note">مبالغ این بخش به میلیون تومان است. با «تسویه»، هزینه‌شده صفر و تنخواه دوباره شارژ می‌شود.</p>
+    </section>
+    <section class="card">
+      <h2>ثبت هزینه تنخواه</h2>
+      <form id="tf">
+        <select id="th" aria-label="تنخواه‌دار"></select>
+        <input id="ta" type="number" min="0.1" step="0.1" placeholder="مبلغ (میلیون تومان)" required aria-label="مبلغ">
+        <input id="td" type="text" placeholder="شرح هزینه" required aria-label="شرح هزینه">
+        <button class="go" type="submit">ثبت هزینه</button>
+      </form>
+      <p class="note" id="tm" role="status"></p>
+      <h2 style="margin-top:16px">آخرین ثبت‌ها</h2>
+      <div id="tl"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+var REV=[820,790,860,910,940,985,1020,1005,1070,1110,1150,1210];
+var CST=[640,625,670,700,725,740,770,775,800,830,860,905];
+var CASH0=1840,N=12;
+var UNITS=[["خدمات سازمانی",44],["محصولات دیجیتال",27],["زیرساخت و شبکه",18],["مشاوره",11]];
+var DEPTS=[["عملیات",2400,2310],["فناوری اطلاعات",1100,1215],["بازاریابی و فروش",900,842],["تحقیق و توسعه",760,704],["منابع انسانی",520,498],["مالی و اداری",410,436]];
+var AR=[["جاری",310],["۳۱ تا ۶۰ روز",140],["۶۱ تا ۹۰ روز",65],["بیش از ۹۰ روز",38]];
+var AP=[["جاری",240],["۳۱ تا ۶۰ روز",95],["۶۱ تا ۹۰ روز",30],["بیش از ۹۰ روز",12]];
+var fa=new Intl.NumberFormat("fa-IR"),n=12;
+function f(x){return fa.format(Math.round(x))}
+function pc(x){return fa.format(Math.round(x*10)/10)+"٪"}
+function sum(a){return a.reduce(function(s,v){return s+v},0)}
+function labels(){var r=[],d=new Date(),i;for(i=11;i>=0;i--)r.push(new Date(d.getFullYear(),d.getMonth()-i,1).toLocaleDateString("fa-IR",{month:"short"}));return r}
+var LB=labels();
+
+var TK=[["خدمات عمومی",50,38.2],["پذیرایی دفتر مرکزی",30,28.1],["پروژه عملیاتی شمال",120,74],["فروش و بازاریابی",80,42.5],["انبار و تدارکات",60,57.9]];
+var TL=[["انبار و تدارکات","کرایه حمل بار",2.2],["پذیرایی دفتر مرکزی","میوه و شیرینی جلسه",1.4],["خدمات عمومی","لوازم نظافت",0.8]];
+function m(x){return fa.format(Math.round(x*10)/10)}
+function tk(){
+  var cap=sum(TK.map(function(x){return x[1]})),sp=sum(TK.map(function(x){return x[2]})),w=TK.filter(function(x){return x[2]/x[1]>=0.9}).length;
+  document.getElementById("tks").innerHTML='<div><span>مجموع سقف</span><b>'+m(cap)+'</b></div><div><span>هزینه‌شده</span><b class="dn">'+m(sp)+'</b></div><div><span>مانده</span><b class="up">'+m(cap-sp)+'</b></div><div><span>نیازمند تسویه</span><b>'+fa.format(w)+'</b></div>';
+  document.getElementById("tkb").innerHTML=TK.map(function(x,i){
+    var p=x[2]/x[1],hi=p>=0.9;
+    return '<tr><td>'+x[0]+'<div class="bar"><div class="'+(hi?"o":"")+'" style="width:'+Math.min(100,p*100)+'%"></div></div></td><td>'+m(x[1])+'</td><td>'+m(x[2])+'</td><td>'+m(x[1]-x[2])+'</td><td>'+(hi?'<span class="tag w">نیاز به تسویه</span> ':'<span class="tag">فعال</span> ')+'<button class="sm" data-i="'+i+'">تسویه</button></td></tr>';
+  }).join("");
+  var sel=document.getElementById("th"),cur=sel.value;
+  sel.innerHTML=TK.map(function(x,i){return '<option value="'+i+'">'+x[0]+' (مانده '+m(x[1]-x[2])+')</option>'}).join("");
+  if(cur)sel.value=cur;
+  document.getElementById("tl").innerHTML=TL.slice(0,5).map(function(l){return '<div class="row"><span>'+l[1]+'<br><small style="color:var(--mute)">'+l[0]+'</small></span><b class="dn">'+m(l[2])+'</b></div>'}).join("");
+}
+document.getElementById("tf").onsubmit=function(e){
+  e.preventDefault();
+  var i=+document.getElementById("th").value,a=+document.getElementById("ta").value,msg=document.getElementById("tm");
+  if(!(a>0))return;
+  if(a>TK[i][1]-TK[i][2]){msg.textContent="مبلغ از مانده تنخواه بیشتر است. ابتدا تنخواه را تسویه کنید.";return}
+  TK[i][2]+=a;TL.unshift([TK[i][0],document.getElementById("td").value.trim(),a]);
+  msg.textContent="هزینه ثبت شد.";e.target.reset();document.getElementById("th").value=i;tk();
+};
+document.getElementById("tkb").onclick=function(e){
+  var i=e.target.getAttribute("data-i");if(i===null)return;
+  TL.unshift([TK[i][0],"تسویه و شارژ مجدد تنخواه",0]);TK[i][2]=0;document.getElementById("tm").textContent="تنخواه تسویه شد.";tk();
+};
+function render(){
+  var rv=REV.slice(-n),cs=CST.slice(-n),pr=rv.map(function(v,i){return v-cs[i]});
+  var R=sum(rv),C=sum(cs),P=R-C;
+  var pR=sum(REV.slice(-2*n,-n)),hasPrev=REV.length>=2*n;
+  var g=hasPrev?(R-pR)/pR*100:null;
+  var cash=CASH0+sum(REV.slice(-n))-sum(CST.slice(-n))-sum(REV.slice(0,12-n))+sum(CST.slice(0,12-n))-0;
+  cash=CASH0+P*0.35;
+  var k=[
+    ['big','درآمد کل',f(R),g===null?"":'<em class="'+(g>=0?"up":"dn")+'">'+(g>=0?"▲ ":"▼ ")+pc(Math.abs(g))+' نسبت به دوره قبل</em>'],
+    ['','هزینه‌ها',f(C),'<em>'+pc(C/R*100)+' از درآمد</em>'],
+    ['','سود خالص',f(P),'<em class="up">'+pc(P/R*100)+' حاشیه سود</em>'],
+    ['','جریان نقدی',f(cash),'<em>موجودی تخمینی</em>'],
+    ['','سود ماهانه (میانگین)',f(P/n),'<em>در '+fa.format(n)+' ماه</em>']
+  ];
+  document.getElementById("kpis").innerHTML=k.map(function(x){return '<div class="k '+x[0]+'"><span>'+x[1]+'</span><b>'+x[2]+'</b>'+x[3]+'</div>'}).join("");
+
+  var W=640,H=230,pb=26,pt=14,ph=H-pb-pt,mx=Math.max.apply(null,rv.concat(cs)),s=W/n,bw=Math.min(16,s/2-3),h="";
+  rv.forEach(function(v,i){
+    var x=W-(i+0.5)*s,hr=v/mx*ph,hc=cs[i]/mx*ph;
+    h+='<rect x="'+(x+1)+'" y="'+(H-pb-hr)+'" width="'+bw+'" height="'+hr+'" rx="2" fill="var(--in)"/>';
+    h+='<rect x="'+(x-bw-1)+'" y="'+(H-pb-hc)+'" width="'+bw+'" height="'+hc+'" rx="2" fill="var(--out)"/>';
+    h+='<text x="'+x+'" y="'+(H-8)+'" text-anchor="middle">'+LB[12-n+i]+'</text>';
+  });
+  h+='<line x1="0" x2="'+W+'" y1="'+(H-pb)+'" y2="'+(H-pb)+'" stroke="var(--line)"/>';
+  document.getElementById("chart").innerHTML='<svg viewBox="0 0 '+W+" "+H+'" width="100%" style="min-width:460px" role="img" aria-label="نمودار درآمد و هزینه">'+h+"</svg>";
+
+  var tu=sum(UNITS.map(function(u){return u[1]}));
+  document.getElementById("units").innerHTML=UNITS.map(function(u){var v=R*u[1]/tu;return '<div style="margin-bottom:12px"><div class="row" style="margin:0"><span>'+u[0]+'</span><b>'+f(v)+'</b></div><div class="bar"><div style="width:'+u[1]/tu*100+'%"></div></div></div>'}).join("");
+
+  document.getElementById("depts").innerHTML=DEPTS.map(function(d){
+    var b=d[1]*n/12,a=d[2]*n/12,v=(a-b)/b*100,ov=a>b;
+    return '<tr><td>'+d[0]+'<div class="bar"><div class="'+(ov?"o":"")+'" style="width:'+Math.min(100,a/b*100)+'%"></div></div></td><td>'+f(b)+'</td><td>'+f(a)+'</td><td class="'+(ov?"dn":"up")+'">'+(ov?"+":"−")+pc(Math.abs(v))+'</td></tr>';
+  }).join("");
+
+  var sh=["#1d4f91","#4a7fc0","#8fb2da","#a62d5c"];
+  function ag(t,a,c){var s=sum(a.map(function(x){return x[1]}));return '<div style="margin-bottom:18px"><div class="row" style="margin:0"><b>'+t+'</b><b>'+f(s)+'</b></div><div class="stk">'+a.map(function(x,i){return '<div title="'+x[0]+'" style="flex:'+x[1]+';background:'+sh[i]+'"></div>'}).join("")+'</div>'+a.map(function(x,i){return '<div class="row" style="margin-top:2px;font-size:12.5px"><span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+sh[i]+';margin-inline-end:6px"></i>'+x[0]+'</span><span>'+f(x[1])+'</span></div>'}).join("")+'</div>'}
+  document.getElementById("aging").innerHTML=ag("مطالبات دریافتنی",AR)+ag("بدهی‌های پرداختنی",AP);
+}
+document.getElementById("seg").onclick=function(e){
+  var v=e.target.getAttribute("data-n");if(!v)return;
+  n=+v;Array.prototype.forEach.call(this.children,function(b){b.className=b===e.target?"on":""});render();
+};
+render();tk();
+</script>
+</body>
+</html>
